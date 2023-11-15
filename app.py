@@ -1,4 +1,4 @@
-from flask import Flask,request
+from flask import Flask, request
 import psycopg2
 
 
@@ -8,52 +8,45 @@ conn = psycopg2.connect(
     user="super_zaher",
     password="user123",
     host="localhost",
-    port="5432"
-        )   
+    port="5432",
+)
 
+print("Hello")
+print("Hello")
+print("Hello")
+print("Hello")
+print("Hello")
+print("Hello")
 
+test_list = [1, 2, 3, 4]
 
- 
 cur = conn.cursor()
 
-users = [
-    {
-        "name":"",
-        "phone" :"",
-        "email":"",
-        "password":""
-    }
-]
+users = [{"name": "", "phone": "", "email": "", "password": ""}]
 
-proudcts= [
-    {
-        "name" :"",
-        "price":"",
-        "item_count" : 0,
-        "owner_id" : 0
-    }
-    
-]
+proudcts = [{"name": "", "price": "", "item_count": 0, "owner_id": 0}]
+
 
 @app.get("/users")
-def get_all_user ():
+def get_all_user():
     cur.execute("SELECT * FROM users")
     users = cur.fetchall()
-    
-    return {"users" : users}
+
+    return {"users": users}
 
 
 # @app.get("/proudcts")
 # def get_all_products():
 #     cur.execute("SELECT * FROM proudcts")
 #     proudcts = cur.fetchall()
-    
+
 
 @app.get("/delete/<int:id>")
 def delete_user(id):
     cur.execute(f"delete from users where user_id = {id}")
     conn.commit()
-    return {"users" : users}
+    return {"users": users}
+
 
 # @app.get("/delete/<init:id>")
 # def delete_proudct(id):
@@ -61,15 +54,29 @@ def delete_user(id):
 #     conn.commit()
 #     return{"proudcts" : proudcts}
 
+
 @app.post("/add")
 def creat_new_user():
     request_data = request.get_json()
-    new_user = {"name" : request_data["name"] ,"phone":request_data["phone"],"email": request_data["email"], "password" : request_data["password"]}
-    cur.execute("INSERT INTO users (name, email,password,phone) VALUES (%s,%s,%s,%s)",[new_user.get("name"),new_user.get("email"),new_user.get("password"),new_user.get("phone")])   #
+    new_user = {
+        "name": request_data["name"],
+        "phone": request_data["phone"],
+        "email": request_data["email"],
+        "password": request_data["password"],
+    }
+    cur.execute(
+        "INSERT INTO users (name, email,password,phone) VALUES (%s,%s,%s,%s)",
+        [
+            new_user.get("name"),
+            new_user.get("email"),
+            new_user.get("password"),
+            new_user.get("phone"),
+        ],
+    )  #
     conn.commit()
     cur.execute("SELECT * FROM users ")
     users = cur.fetchall()
-    return {"users" : users}
+    return {"users": users}
 
 
 # @app.post("/add")
@@ -81,7 +88,7 @@ def creat_new_user():
 #     cur.execute("select * from products")
 #     proudcts = cur.fetchall()
 #     return {"users" : users}
-    
+
 # # @app.post("/proudct/<string:name>/item")
 # # def create_product(name):
 # #     request_data = request.get_json()
@@ -96,28 +103,23 @@ def creat_new_user():
 # # @app.get("/store/<string:name>")
 
 # # def Get_One_store(name):
-    
-    
+
+
 # #     for store in stores:
 # #         if store["name"] == name :
 # #             return store
 
-# #     return{"message" :"this store not found"} , 404 
+# #     return{"message" :"this store not found"} , 404
 
 
 # # @app.get("/store/<string:name>/item")
 # # def Get_All_items_in_one_store(name):
-    
+
 #     for store in stores:
 #         if store["name"] == name :
 #             return {'items':store["items"]}
-#     return{"message" :"this store not found"} , 404 
+#     return{"message" :"this store not found"} , 404
 
 
 if __name__ == "__main__":
     app.run(debug=True, port=9000)
-
-
-
-
-            
