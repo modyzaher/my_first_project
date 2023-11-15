@@ -11,14 +11,6 @@ conn = psycopg2.connect(
     port="5432",
 )
 
-print("Hello")
-print("Hello")
-print("Hello")
-print("Hello")
-print("Hello")
-print("Hello")
-
-test_list = [1, 2, 3, 4]
 
 cur = conn.cursor()
 
