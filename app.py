@@ -18,7 +18,7 @@ users = [{"name": "", "phone": "", "email": "", "password": ""}]
 
 proudcts = [{"name": "", "price": "", "item_count": 0, "owner_id": 0}]
 
-
+#show all USers
 @app.get("/users")
 def get_all_user():
     cur.execute("SELECT * FROM users")
@@ -26,27 +26,28 @@ def get_all_user():
 
     return {"users": users}
 
+#show all products
+@app.get("/proudcts")
+def get_all_products():
+    cur.execute("SELECT * FROM proudcts")
+    proudcts = cur.fetchall()
 
-# @app.get("/proudcts")
-# def get_all_products():
-#     cur.execute("SELECT * FROM proudcts")
-#     proudcts = cur.fetchall()
 
-
+#delete user by id 
 @app.get("/delete/<int:id>")
 def delete_user(id):
     cur.execute(f"delete from users where user_id = {id}")
     conn.commit()
     return {"users": users}
 
+#delete product 
+@app.get("/delete/<init:id>")
+def delete_proudct(id):
+    cur.execute(f"DELETE FROM proudcts where id_product = {id}")
+    conn.commit()
+    return{"proudcts" : proudcts}
 
-# @app.get("/delete/<init:id>")
-# def delete_proudct(id):
-#     cur.execute(f"DELETE FROM proudcts where id_product = {id}")
-#     conn.commit()
-#     return{"proudcts" : proudcts}
-
-
+#add user
 @app.post("/add")
 def creat_new_user():
     request_data = request.get_json()
@@ -70,16 +71,16 @@ def creat_new_user():
     users = cur.fetchall()
     return {"users": users}
 
-
-# @app.post("/add")
-# def add_new_product():
-#     request_data =request.json()
-#     new_product = {"name":request_data["name"], "price":request_data["price"],"item_count":request_data["item_count"],"owner_id":request_data["owner_id"] }
-#     cur.execute("INSERT INTO proudcts (name, price,item_count,owner_id) VALUES (%s,%s,%s)",[new_product.get("name"),new_product.get("price"),new_product.get("item_count"),new_product.get("owner_id")])
-#     conn.commit()
-#     cur.execute("select * from products")
-#     proudcts = cur.fetchall()
-#     return {"users" : users}
+#add product
+@app.post("/add")
+def add_new_product():
+    request_data =request.json()
+    new_product = {"name":request_data["name"], "price":request_data["price"],"item_count":request_data["item_count"],"owner_id":request_data["owner_id"] }
+    cur.execute("INSERT INTO proudcts (name, price,item_count,owner_id) VALUES (%s,%s,%s)",[new_product.get("name"),new_product.get("price"),new_product.get("item_count"),new_product.get("owner_id")])
+    conn.commit()
+    cur.execute("select * from products")
+    proudcts = cur.fetchall()
+    return {"users" : users}
 
 # # @app.post("/proudct/<string:name>/item")
 # # def create_product(name):
